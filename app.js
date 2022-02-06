@@ -1,5 +1,8 @@
 const path = require('path');
+const cors = require('cors') // Place this with other requires (like 'path' and 'express')
+
 const PORT = process.env.PORT || 3000; // So we can run on heroku || (OR) localhost:5000
+
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -33,7 +36,21 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://rdavis:mvxezSmZb1wSWUR1@cluster0.pbeyn.mongodb.net/shop?retryWrites=true&w=majority')
+const corsOptions = {
+    origin: "https://<your_app_name>.herokuapp.com/",
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
+const options = {
+    family: 4
+};
+
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://<username>:<username>@cse341cluster-3dwlw.mongodb.net/test?retryWrites=true&w=majority";
+
+mongoose.connect(
+        MONGODB_URL, options
+    )
     .then(result => {
         User.findOne().then(user => {
             if (!user) {
