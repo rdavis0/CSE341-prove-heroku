@@ -1,8 +1,7 @@
 const path = require('path');
 const cors = require('cors') // Place this with other requires (like 'path' and 'express')
 
-const PORT = process.env.PORT || 3000; // So we can run on heroku || (OR) localhost:5000
-
+const PORT = process.env.PORT || 3000; // So we can run on heroku || (OR) localhost:3000
 
 const express = require('express');
 const bodyParser = require('body-parser');
