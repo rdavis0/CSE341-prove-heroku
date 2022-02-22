@@ -10,9 +10,7 @@
     },
     "author": "Ryan Davis",
     "license": "ISC",
-    "devDependencies": {
-        "nodemon": "^1.18.3"
-    },
+    "devDependencies": {},
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.3",
