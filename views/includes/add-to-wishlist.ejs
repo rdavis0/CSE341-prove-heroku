@@ -1,0 +1,5 @@
+<form action="/wishlist" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button type="submit" class="btn_fa"><i class="far fa-star product__btn-add-to-wishlist"></i></button>
+    <input type="hidden" name="productId" value="<%= product._id %>">
+</form>
