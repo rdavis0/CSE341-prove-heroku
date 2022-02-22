@@ -4,7 +4,6 @@ const Order = require('../models/order');
 exports.getProducts = (req, res, next) => {
     Product.find()
         .then(products => {
-            console.log(products);
             res.render('shop/product-list', {
                 prods: products,
                 pageTitle: 'All Products',
@@ -54,7 +53,6 @@ exports.getIndex = (req, res, next) => {
 exports.getCart = (req, res, next) => {
     req.user
         .populate('cart.items.productId')
-        .execPopulate()
         .then(user => {
             const products = user.cart.items;
             res.render('shop/cart', {
@@ -104,7 +102,6 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
     req.user
         .populate('cart.items.productId')
-        .execPopulate()
         .then(user => {
             const products = user.cart.items.map(i => {
                 return { quantity: i.quantity, product: {...i.productId._doc } };
@@ -139,6 +136,54 @@ exports.getOrders = (req, res, next) => {
                 pageTitle: 'Your Orders',
                 orders: orders
             });
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+};
+
+exports.getWishlist = (req, res, next) => {
+    req.user
+        .populate('wishlist.items.productId')
+        .then(user => {
+            const products = user.wishlist.items;
+            res.render('shop/wishlist', {
+                path: '/wishlist',
+                pageTitle: 'Your Wishlist',
+                products: products
+            });
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+};
+
+exports.postWishlistAddProduct = (req, res, next) => {
+    const prodId = req.body.productId;
+    Product.findById(prodId)
+        .then(product => {
+            return req.user.addToWishlist(product);
+        })
+        .then(result => {
+            console.log(result);
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+};
+
+exports.postWishlistDeleteProduct = (req, res, next) => {
+    const prodId = req.body.productId;
+    req.user
+        .removeFromWishlist(prodId)
+        .then(result => {
+            res.redirect('/wishlist');
         })
         .catch(err => {
             const error = new Error(err);
