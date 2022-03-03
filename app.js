@@ -15,11 +15,7 @@ const User = require('./models/user');
 const PORT = process.env.PORT || 3000; // So we can run on heroku || localhost:3000
 
 const MONGODB_URL =
-    process.env.MONGODB_URL ||
-    "mongodb+srv://rdavis:mvxezSmZb1wSWUR1@cluster0.pbeyn.mongodb.net/shop?retryWrites=true&w=majority";
-
-// const MONGODB_URI =
-//     'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/shop';
+    process.env.MONGODB_URL
 
 const app = express();
 
